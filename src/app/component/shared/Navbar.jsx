@@ -1,4 +1,5 @@
 "use client"
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -7,6 +8,10 @@ import React from 'react';
 const Navbar = () => {
 
     const pathname = usePathname();
+    const session = useSession();
+    console.log(session);
+
+
   
   const navLink = (
     <>

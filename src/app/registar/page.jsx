@@ -5,24 +5,44 @@ import { TbUserPlus } from "react-icons/tb";
 import { FaRegUser, FaEnvelope, FaLock, FaUpload } from "react-icons/fa";
 import { FaUserAlt } from "react-icons/fa";
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { imageUpload } from '../utilities/photoUpload';
+
 
 
 const Register = () => {
-
+const router = useRouter()
 
     const registarHandle = async(e) => {
         e.preventDefault();
         const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const file = e.target.photo.files[0] || null;
 
-        const user = {
-            name,
-            email,
-            password
-        }
+ 
+
+
+    const imageURL = await imageUpload(file);
+
+
+const photoURL = imageURL?.data?.data?.
+delete_url || null;
+
+
 
 try {
+
+
+
+
+    const user = {
+        name,
+        email,
+        password,
+        photoURL
+    }
     
     const response = await fetch('registar/api', {
         method:"POST",
@@ -31,14 +51,27 @@ try {
              'Content-Type': 'application/json',
          }
      })
+
 console.log("response", response);
 
+if(response.status === 200){
+   toast.success("Registar success")
+   setTimeout(() => {
+    router.push('/');
+  }, 3000);
+}
+else{
+    toast.error(response.statusText)
+}
+
+
 } catch (error) {
-    console.log(error.message);
+   toast.error(error.message)
 }
     }
     return (
         <div className="flex pb-20 items-center justify-center  bg-gray-50">
+            <ToastContainer/>
             <div className="w-full mt-24 max-w-[700px] pb-8 space-y-6 bg-white shadow-lg">
                 <div className='flex w-full items-center font-semibold text-lg gap-4 text-white px-8 py-2 bg-[#2b97a3]'>
                     <h1 className='text-3xl'><TbUserPlus /></h1>

@@ -1,14 +1,43 @@
+"use client"
 import Link from 'next/link';
 import React from 'react';
 import { TbLogin2 } from "react-icons/tb";
 import { FaKey, FaRegUser, FaUser } from "react-icons/fa";
 import { FaUnlockAlt } from "react-icons/fa";
+import { signIn } from 'next-auth/react';
+import { toast, ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+
+    const route = useRouter()
+const loginHandle =async (e) => {
+    e.preventDefault()
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+const response = await signIn("credentials", {
+    email,
+    password,
+
+    redirect: false
+})
+
+if(response.status === 200){
+    toast.success("Login success")
+    route.push('/')
+}
+else{
+    toast.error("Incorrect email or passwowrd plz try again!")
+}
+
+
+}
+
+
     return (
         <div className="flex items-center justify-center  bg-gray-50 pb-20">
 
-
+<ToastContainer/>
           
             <div className="w-full max-w-[700px] mt-24  pb-8 space-y-6 bg-white  shadow-lg">
 
@@ -27,7 +56,7 @@ const Login = () => {
 
 
                 
-              <form className="mt-8 space-y-6 px-8">
+              <form onSubmit={loginHandle} className="mt-8 space-y-6 px-8">
                     <div className="rounded-md shadow-sm space-y-4">
                         <div>
                             <label htmlFor="email" className="sr-only flex">Email address</label>

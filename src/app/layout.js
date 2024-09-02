@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./component/shared/Navbar";
-
+import AuthProvider from "@/services/AuthProvider";
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,11 +14,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className} >
-       <div className="max-w-7xl mx-auto ">
+    <AuthProvider>
+    <div className="max-w-7xl mx-auto ">
 <Navbar/>
 
         {children}
         </div> 
+    </AuthProvider>
         
         </body>
     </html>

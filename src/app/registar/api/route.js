@@ -11,7 +11,8 @@ const securePassword= bcrypt.hashSync(user?.password, 14);
 const newUser = {
     name: user?.name,
     email: user?.email,
-    password: securePassword
+    password: securePassword,
+    image : user?.photoURL
 }
 
 console.log("newuser--->", newUser);
@@ -24,7 +25,8 @@ const userCollection = db.collection("users")
 
 const exist =await userCollection.findOne({email: newUser.email})
 if(exist){
-    return Response.json({message: "Email already exist"}, {status: 400})
+    return Response.json({message: "Email already exist"}, {status: 400, statusText: "Email already used"
+    })
 }
 
 
