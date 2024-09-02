@@ -1,17 +1,23 @@
+"use client"
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
+
 const Navbar = () => {
+
+    const pathname = usePathname();
+  
   const navLink = (
     <>
       <li>
-        <Link href="/" className="relative font-semibold hover:text-[#2b97a4] transition duration-300">
+        <Link href="/" className=  {`relative ${pathname === '/' && "text-[#2b97a4]"} font-semibold hover:text-[#2b97a4] transition duration-300`}>
           Home
-          <span className="absolute left-0 right-0 -bottom-1 mx-auto w-0 h-1 bg-[#2b97a4] transition-all duration-300 group-hover:w-full"></span>
+          <span className="absolute left-0 right-0 -bottom-4 mx-auto w-0 h-1 bg-[#2b97a4] transition-all duration-300 group-hover:w-full"></span>
         </Link>
       </li>
       <li>
-        <Link href="/shop" className="relative font-semibold hover:text-[#2b97a4] transition duration-300">
+        <Link href="/shop" className={`relative ${pathname === '/shop' && "text-[#2b97a4]"} font-semibold hover:text-[#2b97a4] transition duration-300`}>
           Shop
           <span className="absolute left-0 right-0 -bottom-1 mx-auto w-0 h-1 bg-[#2b97a4] transition-all duration-300 group-hover:w-full"></span>
         </Link>
@@ -126,7 +132,7 @@ const Navbar = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l1.5-7h-13L5.2 4H19a1 1 0 011 1v2a1 1 0 01-1 1H7m-2 0h2l2 10m0 0h10m-12 0a1 1 0 11-1-1m12 1a1 1 0 11-1-1m0 0H9m12 0H9" />
             </svg>
           </Link>
-          <Link href="/join-us" className="btn bg-[#2b97a4] text-white hover:bg-[#248892] transition duration-300">
+          <Link href="/login" className="btn bg-[#2b97a4] text-white hover:bg-[#248892] transition duration-300">
             Join Us
           </Link>
         </div>
