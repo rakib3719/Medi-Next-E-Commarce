@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { TbLogin2 } from "react-icons/tb";
 import { FaKey, FaRegUser, FaUser } from "react-icons/fa";
 import { FaUnlockAlt } from "react-icons/fa";
@@ -10,9 +10,12 @@ import { useRouter } from 'next/navigation';
 
 const Login = () => {
 
+    
+    const [loading, setLoading] = useState(false)
     const route = useRouter()
 const loginHandle =async (e) => {
     e.preventDefault()
+    setLoading(true)
     const email = e.target.email.value;
     const password = e.target.password.value;
 const response = await signIn("credentials", {
@@ -24,10 +27,12 @@ const response = await signIn("credentials", {
 
 if(response.status === 200){
     toast.success("Login success")
+    setLoading(false)
     route.push('/')
 }
 else{
     toast.error("Incorrect email or passwowrd plz try again!")
+    setLoading(false)
 }
 
 
@@ -114,7 +119,7 @@ else{
                             type="submit"
                             className="group relative flex w-full justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#2b97a4] hover:bg-[#248892] transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2b97a4]  items-center gap-2"
                         >
-                 <FaUnlockAlt className='mb-1'/>      Login
+                 <FaUnlockAlt className='mb-1'/>     { loading ? "Loading": "Sign in"}
                         </button>
                     </div>
                 </form>

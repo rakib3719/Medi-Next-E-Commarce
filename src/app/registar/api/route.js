@@ -15,9 +15,9 @@ const newUser = {
     image : user?.photoURL
 }
 
-console.log("newuser--->", newUser);
 
 
+console.log(newUser, "newUser");
 try {
     const db =await connectDB()
 const userCollection = db.collection("users")
@@ -37,7 +37,7 @@ console.log(response);
 return Response.json({message: "sucess"}, {status: 200})
 
 } catch (error) {
-    return Response.json({message: error}, {status:400})
+    return Response.json({message: error}, {status:400, statusText:error.message})
 }
 
 }

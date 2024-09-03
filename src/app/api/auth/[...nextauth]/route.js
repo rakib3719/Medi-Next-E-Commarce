@@ -8,6 +8,7 @@ session: {
     strategy:"jwt",
     maxAge: 30 * 24 * 60 * 60
 },
+secret: "adifhnlkdajfkjdfakdmfkadjfkjfkugrh",
 
 providers: [
 
@@ -27,19 +28,25 @@ if(!email || !password){
 }
 const db = await connectDB();
 const userCollection = db.collection("users")
-const existEmail = await userCollection.findOne({email: email});
-if(!existEmail){
+const user = await userCollection.findOne({email: email});
+if(!user){
     return null;
 }
 
 
 
-  const compare =  bcrypt.compareSync(password, existEmail.password)
+  const compare =  bcrypt.compareSync(password, user.password)
 if(!compare){
     return null;
 }
 
-return existEmail;
+return {
+ 
+    name: user.name,
+    email: user.email,
+    image: user.image,
+    role: user.role, // Ensure role is included
+  };
 
 
 }
@@ -52,7 +59,36 @@ return existEmail;
 
 ],
 
-callbacks: {},
+callbacks: {
+
+async jwt ({token, user}){
+
+if(user){
+
+    token.name = user.name;
+    token.email = user.email;
+    token.image = user.image;
+    token.role = user.role;
+
+}
+return token
+
+},
+
+
+async session ({session, token}){
+    if(token){
+        session.user = {
+            name: token.name,
+            email: token.email,
+            image : token.image,
+            role : token.role
+        }
+    }
+
+    return session;
+}
+},
 pages: {
     signIn: '/login'
 }

@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { TbUserPlus } from "react-icons/tb";
 import { FaRegUser, FaEnvelope, FaLock, FaUpload } from "react-icons/fa";
 import { FaUserAlt } from "react-icons/fa";
@@ -13,9 +13,11 @@ import { imageUpload } from '../utilities/photoUpload';
 
 const Register = () => {
 const router = useRouter()
+const [loading, setLoading] = useState(false)
 
     const registarHandle = async(e) => {
         e.preventDefault();
+        setLoading(true)
         const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
@@ -56,17 +58,20 @@ console.log("response", response);
 
 if(response.status === 200){
    toast.success("Registar success")
+   setLoading(false)
    setTimeout(() => {
     router.push('/');
   }, 3000);
 }
 else{
     toast.error(response.statusText)
+    setLoading(false)
 }
 
 
 } catch (error) {
    toast.error(error.message)
+   setLoading(false)
 }
     }
     return (
@@ -156,7 +161,9 @@ else{
                                 type="submit"
                                 className="group relative flex w-full justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#2b97a4] hover:bg-[#248892] transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2b97a4] items-center gap-2"
                             >
-                                <FaUserAlt className='mb-1' /> Register
+                                <FaUserAlt className='mb-1' /> {
+                                    loading ? "Loading" : "Register"
+                                }
                             </button>
                         </div>
                     </form>
